@@ -4,6 +4,7 @@ import VideoPlayer from '@/components/VideoPlayer';
 import StreamControls from '@/components/StreamControls';
 import StreamList from '@/components/StreamList';
 import { useToast } from '@/hooks/use-toast';
+import { Info } from 'lucide-react';
 
 // Define a type for our stream objects
 interface Stream {
@@ -12,6 +13,9 @@ interface Stream {
   url: string;
   isConnected: boolean;
 }
+
+// App version
+const APP_VERSION = "1.0.0";
 
 const Index = () => {
   const [streams, setStreams] = useState<Stream[]>([]);
@@ -85,7 +89,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-6">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-6 relative">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-semibold tracking-tight">RTSP Stream Viewer</h1>
@@ -125,6 +129,12 @@ const Index = () => {
             )}
           </div>
         </div>
+      </div>
+      
+      {/* Version number in bottom right */}
+      <div className="fixed bottom-3 right-3 flex items-center text-xs text-gray-500 bg-white/80 backdrop-blur-sm py-1 px-2 rounded-full shadow-sm border border-gray-200">
+        <Info className="w-3 h-3 mr-1" />
+        <span>v{APP_VERSION}</span>
       </div>
     </div>
   );
