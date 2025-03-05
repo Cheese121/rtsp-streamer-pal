@@ -19,7 +19,7 @@ const StreamControls = ({
   onToggleConnection,
 }: StreamControlsProps) => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
       <div className="flex items-center gap-2">
         <Badge variant={isConnected ? "default" : "secondary"}>
           {isConnected ? "Connected" : "Disconnected"}
@@ -36,6 +36,7 @@ const StreamControls = ({
           onClick={onToggleConnection}
           variant={isConnected ? "destructive" : "default"}
           className="min-w-[120px] transition-all duration-200"
+          disabled={!url}
         >
           {isConnected ? (
             <>

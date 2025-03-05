@@ -19,10 +19,18 @@ const VideoPlayer = ({ url, isConnected }: VideoPlayerProps) => {
       description: "Failed to connect to the RTSP stream. Please check the URL and try again.",
       variant: "destructive",
     });
+    setIsLoading(false);
   };
 
+  // Reset loading state when stream changes
+  React.useEffect(() => {
+    if (isConnected) {
+      setIsLoading(true);
+    }
+  }, [url, isConnected]);
+
   return (
-    <div className="relative w-full aspect-video bg-black/5 rounded-lg overflow-hidden backdrop-blur-sm">
+    <div className="relative w-full aspect-video bg-black/5 rounded-lg overflow-hidden backdrop-blur-sm border border-gray-200 shadow-sm">
       {isConnected ? (
         <>
           {isLoading && (
