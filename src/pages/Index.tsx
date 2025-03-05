@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import VideoPlayer from '@/components/VideoPlayer';
 import StreamControls from '@/components/StreamControls';
 import StreamList from '@/components/StreamList';
@@ -16,11 +16,53 @@ interface Stream {
 
 // App version
 const APP_VERSION = "1.1.0";
+const STORAGE_KEY = "rtsp-stream-viewer-streams";
 
 const Index = () => {
   const [streams, setStreams] = useState<Stream[]>([]);
   const [currentStreamId, setCurrentStreamId] = useState<string | null>(null);
   const { toast } = useToast();
+
+  // Load saved streams from localStorage on initial render
+  useEffect(() => {
+    const savedStreams = localStorage.getItem(STORAGE_KEY);
+    if (savedStreams) {
+      try {
+        const parsedStreams = JSON.parse(savedStreams) as Stream[];
+        // Ensure all streams are disconnected on page load
+        const restoredStreams = parsedStreams.map(stream => ({
+          ...stream,
+          isConnected: false
+        }));
+        
+        setStreams(restoredStreams);
+        
+        // Set the current stream if we have any
+        if (restoredStreams.length > 0) {
+          setCurrentStreamId(restoredStreams[0].id);
+        }
+      } catch (error) {
+        console.error("Failed to parse saved streams:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load saved streams",
+          variant: "destructive"
+        });
+      }
+    }
+  }, [toast]);
+
+  // Save streams to localStorage whenever they change
+  useEffect(() => {
+    // Save stream configuration but set all streams to disconnected state
+    // for storage (they'll reconnect when needed)
+    const streamsToSave = streams.map(stream => ({
+      ...stream,
+      isConnected: false
+    }));
+    
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(streamsToSave));
+  }, [streams]);
 
   // Get the current stream object
   const currentStream = streams.find(stream => stream.id === currentStreamId) || null;
