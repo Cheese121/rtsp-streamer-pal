@@ -15,7 +15,7 @@ interface Stream {
 }
 
 // App version
-const APP_VERSION = "1.0.0";
+const APP_VERSION = "1.1.0";
 
 const Index = () => {
   const [streams, setStreams] = useState<Stream[]>([]);
@@ -93,7 +93,7 @@ const Index = () => {
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-semibold tracking-tight">RTSP Stream Viewer</h1>
-          <p className="text-gray-500">Manage multiple RTSP camera feeds</p>
+          <p className="text-gray-500">Manage multiple RTSP camera feeds via WebRTC</p>
         </div>
         
         <div className="grid md:grid-cols-[300px_1fr] gap-6">
